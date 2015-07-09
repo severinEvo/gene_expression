@@ -19,7 +19,7 @@ Usage: Input data should be normalised (e.g., using zFPKM). This assumes a gene 
 
 >\> spec <- rep(c("A","B"),each=10,times=2)
 
->\> tis <- rep(c("tis\_1",tis\_2"),each=20)
+>\> tis <- rep(c("tis\_1","tis\_2"),each=20)
 
 >\> sex <- rep(c("f","m","f","m"),each=5,times=2)
 
