@@ -17,13 +17,15 @@ Usage: Input values must have NA's in stead of 0 (or log2(0) = -Inf) and be log2
 
 Usage: Input data should be normalised (e.g., using zFPKM). This assumes a gene (rows) by individual (columns) matrix. First, fixed effects (the two populations to be compared; here called species) and random effects (here, sex) need to be defined like this:
 
->\> spec <- rep(c("A","B"),each=10)
+>\> spec <- rep(c("A","B"),each=10,times=2)
 
->\> sex <- rep(c("f","m","f","m"),each=5)
+>\> tis <- rep(c("tis\_1",tis\_2"),each=20)
+
+>\> sex <- rep(c("f","m","f","m"),each=5,times=2)
 
 The function is then called as follows:
 
->\> qst_data <- apply(dataset, 1, Qst, spec=spec [, sex=sex])
+>\> qst_data <- apply(dataset, 1, Qst, spec=spec [, tis=tis, sex=sex])
 
 <i>Q</i><sub>ST</sub>, vW, and vB are then retrieved as the three dataframe rows:
 
