@@ -15,7 +15,7 @@ Usage: Input values must have NA's in stead of 0 (or log2(0) = -Inf) and be log2
 
 <i>Q</i><sub>ST</sub> is a measure for differentiation in quantitative traits similar to Fisher's fixation index <i>F</i><sub>ST</sub> for genetic differentiation. As gene expression constitutes a quantitative trait, this framework can be applied to gene expression levels when one wants to compare expression differences between populations or species. In essence, <i>Q</i><sub>ST</sub> compares within (vW) and between population variance (vB). The function as implemented here returns <i>Q</i><sub>ST</sub>, vW, vB.
 
-Usage: Input data should be normalised (e.g., using zFPKM). This assumes a gene (rows) by individual (columns) matrix. First, fixed effects (the two populations to be compared; here called species) and random effects (here, sex) need to be defined like this:
+Usage: Input data should be normalised (e.g., using zFPKM). This assumes a gene (rows) by individual (columns) matrix. First, fixed effects (the two populations to be compared; here called species) and optional random effects (here, sex and tissue) need to be defined like this:
 
 >\> spec <- rep(c("A","B"),each=10,times=2)
 
