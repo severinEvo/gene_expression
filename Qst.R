@@ -1,53 +1,26 @@
-Qst<-function(i, spec, tis=NULL, sex=NULL){
-  spec<-as.factor(spec)
-  tis<-as.factor(tis)
-  sex<-as.factor(sex)
-  if(length(levels(spec))!=2) stop('Two species needed.')
-
-  lsp1<-length(spec[levels(spec)==levels(spec)[1]])
-  lsp2<-length(spec[levels(spec)==levels(spec)[2]])
-  n0<-length(i)-(lsp1^2+lsp2^2)/length(i)
-
-  if(length(levels(tis))>0 & length(levels(sex))>0){
-    dataset<-data.frame(expr=i,spec=spec,tis=tis,sex=sex)
-    dataset_0<-dataset[!is.na(dataset[,1]),]
-    if(length(levels(droplevels(dataset_0$tis)))<2 & length(levels(droplevels(dataset_0$sex)))==1){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec))
-    }else if(length(levels(droplevels(dataset_0$tis)))>1 & length(levels(droplevels(dataset_0$sex)))==1){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec * dataset_0$tis))
-    }else if(length(levels(droplevels(dataset_0$tis)))<2 & length(levels(droplevels(dataset_0$sex)))==2){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec * dataset_0$sex))
-    }else if(length(levels(droplevels(dataset_0$tis)))>1 & length(levels(droplevels(dataset_0$sex)))==2){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec * dataset_0$tis * dataset_0$sex))
-    }else stop('Unknown error.')
+Qst<-function(y, fixed, ...){
+  chk = list(...)
+  chk$fixed = fixed
+  for(n in names(chk))
+    if(length(unique(chk[[n]])) < 2)
+      stop(n, " must contain at least 2 levels")
+  d = data.frame(y = y, fixed = fixed, ...)
+  dd = subset(d, !is.na(y))
+  if(length(unique(dd$fixed)) < 2){
+    warning("after excluding NA from y, fixed factor has one level")
+    return(NA)
   }
-  if(length(levels(tis))==0 & length(levels(sex))>0){
-    dataset<-data.frame(expr=i,spec=spec,sex=sex)
-    dataset_0<-dataset[!is.na(dataset[,1]),]
-    if(length(levels(droplevels(dataset_0$sex)))==1){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec))
-    }else if(length(levels(droplevels(dataset_0$sex)))==2){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec * dataset_0$sex))
-    }else stop('Unknown error.')
-  }
-  if(length(levels(tis))>0 & length(levels(sex))==0){
-    dataset<-data.frame(expr=i,spec=spec,tis=tis)
-    dataset_0<-dataset[!is.na(dataset[,1]),]
-    if(length(levels(droplevels(dataset_0$tis)))<2){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec))
-    }else if(length(levels(droplevels(dataset_0$tis)))>1){
-      anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec * dataset_0$tis))
-    }else stop('Unknown error.')
-  }
-  if(length(levels(tis))==0 & length(levels(sex))==0){
-    dataset<-data.frame(expr=i,spec=spec)
-    dataset_0<-dataset[!is.na(dataset[,1]),]
-    anova_0<-anova(aov(dataset_0[,1] ~ dataset_0$spec))
-  }
-  
-  vW<-tail(anova_0$'Mean Sq',n=1)
-  vB<-(anova_0[1,3]-vW)/n0
-  qst<-vB/(vB+2*vW)
-  if(qst<0){qst<-0}
+  if(ncol(dd) > 2)
+    for(n in names(dd)[-c(1,2)])
+      if(length(unique(dd[[n]])) < 2)
+        dd[[n]] = NULL
+  res = anova(aov(y ~ fixed * ., data = dd))
+  vW = res[nrow(res),3] # residual mean squares
+  lf1 = length(fixed[fixed==unique(fixed)[1]])
+  lf2 = length(fixed[fixed==unique(fixed)[2]])
+  n0 = length(fixed)-(lf1^2+lf2^2)/length(fixed)
+  vB = (res[1,3]-vW)/n0 # fixed effect factor mean squares
+  qst = vB/(vB+2*vW)
+  if(qst < 0) qst = 0
   return(c(qst,vW,vB))
 }
