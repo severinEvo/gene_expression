@@ -21,6 +21,5 @@ Qst<-function(y, fixed, ...){
   n0 = length(fixed)-(lf1^2+lf2^2)/length(fixed)
   vB = (res[1,3]-vW)/n0 # fixed effect factor mean squares
   qst = vB/(vB+2*vW)
-  if(qst < 0) qst = 0
   return(c(qst,vW,vB))
 }
