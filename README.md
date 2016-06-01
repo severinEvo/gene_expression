@@ -5,7 +5,7 @@ Some useful functions for gene expression analyses
 
 A function for normalising gene expression datasets in a comparative manner over different sequencing libraries and experiments. It builds on FPKM normalisation and needs FPKM normalised expression values as input. zFPKM has been developed by Hart and colleagues¹. I here implemented this function for R.
 
-Usage: Input values must have NA's in stead of 0 (or log2(0) = -Inf) and be log2 transformed. On a gene (rows) by library (columns) matrix, use than as in
+Usage: Input values must have NA's in stead of 0 (or log2(0) = -Inf) and be log2 transformed. On a gene (rows) by library (columns) matrix, use then as in
 
 >\> zFPKM_data <- apply(FPKM_data, 2, z_fpkm)
 
