@@ -9,6 +9,8 @@ Usage: Input values must have NA's in stead of 0 (or log2(0) = -Inf) and be log2
 
 >\> zFPKM_data <- apply(FPKM_data, 2, z_fpkm)
 
+Note that this function also applies the cutoff suggested in the study¹ by removing genes below an expression value of log2(0.125) = -3.
+
 ¹Hart <i>et al.</i> 2013: Finding the active genes in deep RNA-seq gene expression studies. BMC Genomics 14:778.
 
 ## Qst.R
