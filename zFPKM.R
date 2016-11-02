@@ -4,10 +4,7 @@ z_fpkm<-function(i){
   my<-density(i,na.rm=T)$x[which.max(density(i,na.rm=T)$y)]
   U<-mean(i[i>my],na.rm=T)
   sigma<-(U-my)*(.5*pi)^.5
-  z<-NULL
-  for(j in 1:length(i)){
-    z[j]<-(i[j]-my)/sigma
-  }
+  z<-(i-my)/sigma
   z[z< -3]<-NA
   return(z)
 }
