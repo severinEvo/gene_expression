@@ -1,4 +1,4 @@
-Qst<-function(y, fixed, ...){
+Pst<-function(y, fixed, ...){
   chk = list(...)
   chk$fixed = fixed
   for(n in names(chk))
@@ -20,6 +20,6 @@ Qst<-function(y, fixed, ...){
   lf2 = length(fixed[fixed==unique(fixed)[2]])
   n0 = length(fixed)-(lf1^2+lf2^2)/length(fixed)
   vB = (res[1,3]-vW)/n0 # fixed effect factor mean squares
-  qst = vB/(vB+2*vW)
-  return(c(qst,vW,vB))
+  pst = vB/(vB+2*vW)
+  return(c(pst,vW,vB))
 }
